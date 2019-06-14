@@ -22,6 +22,9 @@
 #define END_POS_Y 23
 
 #define MAX_BULLET 20
+#define MAX_TANK 1
+
+#define SPEED 1000
 
 enum Direction {
 	NORTH, SOUTH, EAST, WEST

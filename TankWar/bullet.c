@@ -8,44 +8,64 @@
 #include "operation.h"
 
 extern int map[MAXN][MAXN];
+extern Bullet* bullets[MAX_BULLET];
 
 Bullet* newBullet(Tank* father) {
 	Bullet *ret = (Bullet*)malloc(sizeof(Bullet));
 
+	if (!ret) return NULL;
+
+	ret->isNew = True;
 	ret->belongTo = father;
 	ret->direction = father->direction;
 
 	switch (father->direction) {
-		case UP: 
-			ret->x = father->x;
-			ret->y = father->y - 2;
-			break;
-		case DOWN:
-			ret->x = father->x;
-			ret->y = father->y + 2;
-			break;
-		case LEFT:
+		case NORTH: 
 			ret->x = father->x - 2;
 			ret->y = father->y;
 			break;
-		case RIGHT:
+		case SOUTH:
 			ret->x = father->x + 2;
 			ret->y = father->y;
 			break;
+		case WEST:
+			ret->x = father->x;
+			ret->y = father->y - 2;
+			break;
+		case EAST:
+			ret->x = father->x;
+			ret->y = father->y + 2;
+			break;
 	}
 
-	return ret;
+	Bool flag = False;
+	for (int i = 0; i < MAX_BULLET; i++) {
+		if (bullets[i] == NULL) {
+			flag = True;
+			bullets[i] = ret;
+			break;
+		}
+	}
+
+	return flag ? ret : NULL;
+}
+
+void printBullet(Bullet *bullet) {
+	goToxy(bullet->y * 2, bullet->x);
+	printf("o");
 }
 
 void clearBullet(Bullet *bullet) {
-	goToxy(bullet->x, bullet->y);
+	goToxy(bullet->y * 2, bullet->x);
 	printf(" ");
-	free(bullet);
-	bullet = NULL;
+}
+
+Bool isOutSide(Bullet *bullet) {
+	if (bullet->x <= 0 || bullet->y <= 0 || bullet->x >= 40 || bullet->y >= 40) return True;
+	return False;
 }
 
 Bool isHit(Bullet *bullet) {
-	if (bullet->x >= MAXN || bullet->x <= 0 || bullet->y >= MAXN || bullet->y <= 0) {
-		clearBullet(bullet);
-	}
+	if (map[bullet->x][bullet->y] != 0) return True;
+	return False;
 }

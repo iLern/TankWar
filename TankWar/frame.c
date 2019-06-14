@@ -46,10 +46,8 @@ void sideScreen() {
 	printf("方向键  ←↑→↓  移动");
 	goToxy(93, 29);
 	printf("x 键 射击");
-	goToxy(90, 35);
-	printf("回车键 暂停游戏");
 	goToxy(90, 37);
-	printf("Esc键  退出游戏");
+	printf("Esc键  暂停游戏");
 }
 
 void showMenu() {
